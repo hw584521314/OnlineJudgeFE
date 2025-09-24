@@ -22,6 +22,17 @@
     :data="examList"
     @row-dblclick="handleDblclick"
     style="width: 100%">
+
+  <el-table-column type="expand">
+      <template slot-scope="props">
+        <el-form label-position="left" :inline="false" >
+          <el-form-item label="" v-for="each in props.row.exam_details" :key="each.id" >
+           <span>{{ each.category }}</span> [绑定] <span>{{ each.exam_detail.name }}</span>
+          </el-form-item>          
+        </el-form>
+      </template>
+    </el-table-column>
+
       <el-table-column
         width="50"
         prop="id"
@@ -165,8 +176,9 @@ export default {
       api["getExamList"](params).then(res => {
         if (res.data.error ==null) {
           //console.log(res.data)
-          this.examList = res.data.data
-          this.total = res.data.data.length
+          //debugger
+          this.examList = res.data.data.data
+          this.total = res.data.data.total
         } else {
           utils.showError(res.data.data)
         }

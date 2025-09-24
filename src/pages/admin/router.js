@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import { Announcement, Conf, Contest, ContestList, Home, JudgeServer, Login,
   Problem, ProblemList, User, PruneTestCase, Dashboard, ProblemImportOrExport ,
   ExamList,Exam,ExamResultList,ExamStudentList,ExamCreate,ExamDetailList,ExamDetail,
-  StudentList,StudentCreate,ExamDetailCreate
+  StudentList,StudentCreate,ExamDetailCreate,StudentExamHistory
 } from './views'
 Vue.use(VueRouter)
 
@@ -83,6 +83,13 @@ export default new VueRouter({
           name:'exam-result-list',
           component:ExamResultList
         },
+        {
+          path:"/student/get_exam_history/:studentId",
+          name:"student-exam-history",
+          component:StudentExamHistory,
+          
+        },
+
         {
           path:"/student/get_list",
           name:'student-list',

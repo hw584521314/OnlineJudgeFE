@@ -240,6 +240,13 @@ export default {
       data
     })
   },
+  getStudentExamResultList(params)
+    {
+      params = utils.filterEmptyValue(params)
+      return ajax('admin/student/get_exam_result_history', 'get', {
+        params
+      })
+    },
   exportExamResult(data){
     data = utils.filterEmptyValue(data)
     return ajax('admin/exam/export_result', 'post', {

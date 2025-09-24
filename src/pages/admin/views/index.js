@@ -21,10 +21,11 @@ import ExamDetail from './exam/ExamDetail.vue'
 import ExamDetailCreate from './exam/ExamDetailCreate.vue'
 import StudentList from './exam/student/StudentList.vue'
 import StudentCreate from './exam/student/StudentCreate.vue'
+import StudentExamHistory from './exam/student/StudentExamHistory.vue'
 
 export {
   Announcement, User, Conf, JudgeServer, Problem, ProblemList, Contest,
   ContestList, Login, Home, PruneTestCase, Dashboard, ProblemImportOrExport,
   Exam,ExamList,ExamResultList,ExamStudentList,ExamCreate,ExamDetailList,ExamDetail,
-  StudentList,StudentCreate,ExamDetailCreate
+  StudentList,StudentCreate,ExamDetailCreate,StudentExamHistory
 }

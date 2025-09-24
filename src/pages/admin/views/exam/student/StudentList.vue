@@ -80,7 +80,7 @@
       </el-table-column>
 
       <el-table-column
-          width="250"  
+          width="350"  
           label="操作">
           <template slot-scope="{row}">
             <el-button size="mini" @click="rowEdit(row)">
@@ -91,6 +91,9 @@
             </el-button>
             <el-button size="mini" @click="rowResetPassword(row)">
               <i  class="el-icon-setting"></i>重置密码
+            </el-button>
+            <el-button size="mini" @click="rowExamHistory(row)">
+              <i  class="el-icon-setting"></i>考试历史
             </el-button>
             
           </template>
@@ -230,6 +233,9 @@ export default {
       this.studentDetailInfoShow = false;
       this.studentInfo = {};
       this.getStudentList();
+    },
+    rowExamHistory(row) {
+      this.$router.push({name: 'student-exam-history', params: {studentId: row.id}})
     },
     rowDelete (row) {
       this.$confirm('是否删除该学生？', '提示', {
