@@ -6,11 +6,11 @@
         <Icon type="home"></Icon>
         {{$t('m.Home')}}
       </Menu-item>
-      <Menu-item name="/problem">
+      <Menu-item name="/problem" v-if="running_mode!='exam'">
         <Icon type="ios-keypad"></Icon>
         {{$t('m.NavProblems')}}
       </Menu-item>
-      <Menu-item name="/contest">
+      <Menu-item name="/contest" v-if="running_mode!='exam'">
         <Icon type="trophy"></Icon>
         {{$t('m.Contests')}}
       </Menu-item>
@@ -18,11 +18,11 @@
         <Icon type="trophy"></Icon>
         {{$t('m.Exam')}}
       </Menu-item>
-      <Menu-item name="/status">
+       <Menu-item name="/status" v-if="running_mode!='exam'||isAdminRole">
         <Icon type="ios-pulse-strong"></Icon>
         {{$t('m.NavStatus')}}
-      </Menu-item>
-      <Submenu name="rank">
+      </Menu-item> 
+      <Submenu name="rank" v-if="running_mode!='exam'">
         <template slot="title">
           <Icon type="podium"></Icon>
           {{$t('m.Rank')}}
@@ -34,7 +34,7 @@
           {{$t('m.OI_Rank')}}
         </Menu-item>
       </Submenu>
-      <Submenu name="about">
+       <Submenu name="about">
         <template slot="title">
           <Icon type="information-circled"></Icon>
           {{$t('m.About')}}
@@ -45,7 +45,7 @@
         <Menu-item name="/FAQ">
           {{$t('m.FAQ')}}
         </Menu-item>
-      </Submenu>
+      </Submenu> 
       <template v-if="!isAuthenticated">
         <div class="btn-menu">
           <Button type="ghost"
@@ -68,7 +68,8 @@
           </Button>
           <Dropdown-menu slot="list">
             <Dropdown-item name="/user-home">{{$t('m.MyHome')}}</Dropdown-item>
-            <Dropdown-item name="/status?myself=1">{{$t('m.MySubmissions')}}</Dropdown-item>
+            <Dropdown-item name="/user-exam">{{$t('m.MyExam')}}</Dropdown-item>
+            <Dropdown-item name="/status?myself=1" v-if="running_mode!='exam'||isAdminRole">{{$t('m.MySubmissions')}}</Dropdown-item>
             <Dropdown-item name="/setting/profile">{{$t('m.Settings')}}</Dropdown-item>
             <Dropdown-item v-if="isAdminRole" name="/admin">{{$t('m.Management')}}</Dropdown-item>
             <Dropdown-item divided name="/logout">{{$t('m.Logout')}}</Dropdown-item>
@@ -88,14 +89,29 @@
   import { mapGetters, mapActions } from 'vuex'
   import login from '@oj/views/user/Login'
   import register from '@oj/views/user/Register'
+  import api from '@oj/api'
 
   export default {
     components: {
       login,
       register
     },
+    data()
+    {
+      return {
+        running_mode:'practice'
+      }
+    },
+    
     mounted () {
       this.getProfile()
+      api.getRunningMode().then(res => {
+        console.log("获取运行模式成功");
+        //this.$store.commit('CHANGE_RUNNING_MODE', {mode: res.data.data.running_mode})
+        this.running_mode= res.data.data.running_mode
+      }).catch(() => {
+        console.log("获取运行模式失败");
+      })
     },
     methods: {
       ...mapActions(['getProfile', 'changeModalStatus']),
@@ -114,7 +130,9 @@
       }
     },
     computed: {
-      ...mapGetters(['website', 'modalStatus', 'user', 'isAuthenticated', 'isAdminRole']),
+      //...mapState(['running_mode']),
+      
+      ...mapGetters(['website','modalStatus', 'user', 'isAuthenticated', 'isAdminRole']),
       // 跟随路由变化
       activeMenu () {
         return '/' + this.$route.path.split('/')[1]

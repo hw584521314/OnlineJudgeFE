@@ -1,5 +1,23 @@
 <template>
   <div class="view">
+    <Panel title="运行模式配置">
+      
+
+              <el-switch
+                v-model="running_mode"
+                active-value="exam"
+                active-text="考试模式"
+                inactive-value="practice"
+                inactive-text="练习模式"
+                @change="runningModeChange()"
+          
+                >
+                
+              </el-switch>
+
+      
+    </Panel>
+
     <Panel :title="$t('m.SMTP_Config')">
       <el-form label-position="left" label-width="70px" :model="smtp">
         <el-row :gutter="20">
@@ -90,7 +108,7 @@
 
 <script>
   import api from '../../api.js'
-
+  import {mapState} from 'vuex'
   export default {
     name: 'Conf',
     data () {
@@ -105,8 +123,12 @@
           email: 'email@example.com',
           tls: true
         },
+        running_mode: 'practice',
         websiteConfig: {}
       }
+    },
+    computed:{
+        //...mapState['running_mode']
     },
     mounted () {
       api.getSMTPConfig().then(res => {
@@ -121,8 +143,21 @@
         this.websiteConfig = res.data.data
       }).catch(() => {
       })
+      api.getRunningMode().then(res => {
+        this.running_mode= res.data.data.running_mode
+      }).catch(() => {
+      })
     },
     methods: {
+      runningModeChange()
+      {
+        api.updateRunningMode(this.running_mode).then(res => {
+          
+          
+        }).catch(err => {
+          
+        })
+      },
       saveSMTPConfig () {
         if (!this.init) {
           api.editSMTPConfig(this.smtp).then(() => {

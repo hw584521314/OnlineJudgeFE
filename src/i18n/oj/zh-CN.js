@@ -158,6 +158,7 @@ export const m = {
   Login: '登录',
   Register: '注册',
   MyHome: '我的主页',
+  MyExam:'我的考试',
   MySubmissions: '我的提交',
   Settings: '我的设置',
   Management: '后台管理',

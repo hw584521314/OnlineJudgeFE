@@ -19,7 +19,7 @@
 <script>
   import { mapActions, mapState } from 'vuex'
   import NavBar from '@oj/components/NavBar.vue'
-
+  
   export default {
     name: 'app',
     components: {
@@ -38,11 +38,13 @@
     },
     mounted () {
       this.getWebsiteConfig()
+      
     },
     methods: {
       ...mapActions(['getWebsiteConfig', 'changeDomTitle'])
     },
     computed: {
+
       ...mapState(['website'])
     },
     watch: {

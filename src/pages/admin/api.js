@@ -97,6 +97,14 @@ export default {
       data
     })
   },
+  getRunningMode(){
+    return ajax('admin/running_mode', 'get')
+  },
+  updateRunningMode(mode){
+    return ajax('admin/running_mode', 'post', {
+      data: {"running_mode":mode}
+    })
+  },
   getLanguages () {
     return ajax('languages', 'get')
   },
@@ -203,6 +211,120 @@ export default {
       data
     })
   },
+
+  getExamInfo(params){
+    return ajax('admin/exam/get', 'get', {
+      params
+    })
+  },
+  getExamList(params){
+    params = utils.filterEmptyValue(params)
+    return ajax('admin/exam/get_list', 'get', {
+      params
+    })
+  },
+  createExam(data){
+    return ajax('admin/exam/create', 'post', {
+      data
+    })
+  },
+  updateExam(data){ 
+    data = utils.filterEmptyValue(data)
+    return ajax('admin/exam/update', 'post', {
+      data
+    })
+  },
+  deleteExam(data){
+    
+    return ajax('admin/exam/delete', 'post', {
+      data
+    })
+  },
+  exportExamResult(data){
+    data = utils.filterEmptyValue(data)
+    return ajax('admin/exam/export_result', 'post', {
+      data
+    })
+  },
+  createExamDetail(data){ 
+    return ajax('admin/exam/exam_detail/create', 'post', {
+      data
+    })
+  },
+  getExamDetailList(params){
+    params = utils.filterEmptyValue(params)
+    return ajax('admin/exam/exam_detail/get_list', 'get', {
+      params
+    })
+  },
+  getExamDetail(params){
+    params = utils.filterEmptyValue(params)
+    return ajax('admin/exam/exam_detail/get', 'get', {
+      params
+    })
+  },
+  getExamDetailOfExam(params){
+    params = utils.filterEmptyValue(params)
+    return ajax('admin/exam/get_exam_detail', 'get', {
+      params
+    })
+  },
+  updateExamDetailOfExam(data){
+    data = utils.filterEmptyValue(data)
+    return ajax('admin/exam/update_exam_detail', 'post', {
+      data
+    })
+  },
+  updateExamDetail(data){
+    data = utils.filterEmptyValue(data)
+    return ajax('admin/exam/exam_detail/update', 'post', {
+      data
+    })
+  },
+  deleteExamDetail(data){
+    data = utils.filterEmptyValue(data)
+    return ajax('admin/exam/exam_detail/delete', 'post', {
+      data
+    })
+  },
+
+//student相关API
+getStudentInfo (params) {
+    return ajax('admin/student/get', 'get', {
+      params
+    })
+  },
+updateStudent (data) {
+    data = utils.filterEmptyValue(data)
+    return ajax('admin/student/update', 'post', {
+      data
+    })
+  },
+
+  createStudent (data) {
+    data = utils.filterEmptyValue(data)
+    return ajax('admin/student/create', 'post', {
+      data
+    })
+  },
+deleteStudent (params) {    
+    return ajax('admin/student/delete', 'get', {
+      params
+    })
+  },
+  getStudentList (params) {    
+    params = utils.filterEmptyValue(params)
+    return ajax('admin/student/get_list', 'get', {
+      params
+    })
+  },
+  resetStudentPassword (data) {
+    data = utils.filterEmptyValue(data)
+    return ajax('admin/student/reset_password', 'post', {
+      data
+    })
+  },
+//problem相关API
   getProblemTagList (params) {
     return ajax('problem/tags', 'get', {
       params

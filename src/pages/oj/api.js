@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import store from '@/store'
 import axios from 'axios'
+import utils from '@/utils/utils'
 
 Vue.prototype.$http = axios
 axios.defaults.baseURL = '/api'
@@ -199,9 +200,19 @@ export default {
       }
     })
   },
+  getRunningMode(){
+    return ajax('running_mode', 'get')
+  },
   submitCode (data) {
     return ajax('submission', 'post', {
       data
+    })
+  },
+  getUserExamResultList(params)
+  {
+    params = utils.filterEmptyValue(params)
+    return ajax('exam/get_result_list', 'get', {
+      params
     })
   },
   getSubmissionList (offset, limit, params) {
@@ -268,7 +279,55 @@ export default {
     return ajax('admin/contest/acm_helper', 'put', {
       data
     })
-  }
+  },
+  //学生获取考试列表
+  getExamList(params){
+    params = utils.filterEmptyValue(params)
+    return ajax('exam/get_list', 'get', {
+      params
+    })
+  },
+  //获取具体某场考试
+  getExam(params)
+  {
+    params = utils.filterEmptyValue(params)
+    return ajax('exam/get', 'get', {
+      params
+    })
+  },
+  //获取具体某场考试的题目
+  getExamProblemList(params)
+  {
+    params = utils.filterEmptyValue(params)
+    return ajax('exam/exam_detail/get', 'get', {
+      params
+    })
+  },
+  getExamProblem (problemID, examID) {
+    return ajax('exam/problem', 'get', {
+      params: {
+        exam_id: examID,
+        problem_id: problemID
+      }
+    })
+  },
+  getMyScore(examID,examDetailID)
+  {
+    return ajax('exam/result/get', 'get', {
+      params: {
+        exam_id: examID,
+        exam_detail_id:examDetailID
+      }
+    })
+
+  },
+    getExamSubmissionList (offset, limit, params) {
+    params.limit = limit
+    params.offset = offset
+    return ajax('exam/submissions', 'get', {
+      params
+    })
+  },
 }
 
 /**

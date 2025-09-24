@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './modules/user'
 import contest from './modules/contest'
+import exam from './modules/exam'
 import api from '@oj/api'
 import types from './types'
 
@@ -13,7 +14,8 @@ const rootState = {
   modalStatus: {
     mode: 'login', // or 'register',
     visible: false
-  }
+  },
+  running_mode: 'practice' // or 'exam'
 }
 
 const rootGetters = {
@@ -22,6 +24,9 @@ const rootGetters = {
   },
   'modalStatus' (state) {
     return state.modalStatus
+  },
+  'running_mode' (state) {
+    return state.running_mode
   }
 }
 
@@ -36,6 +41,9 @@ const rootMutations = {
     if (visible !== undefined) {
       state.modalStatus.visible = visible
     }
+  },
+  [types.CHANGE_RUNNING_MODE] (state, payload) {
+    state.running_mode = payload.mode
   }
 }
 
@@ -62,7 +70,8 @@ const rootActions = {
 export default new Vuex.Store({
   modules: {
     user,
-    contest
+    contest,
+    exam
   },
   state: rootState,
   getters: rootGetters,

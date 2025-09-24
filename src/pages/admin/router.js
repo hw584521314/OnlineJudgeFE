@@ -2,7 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 引入 view 组件
 import { Announcement, Conf, Contest, ContestList, Home, JudgeServer, Login,
-  Problem, ProblemList, User, PruneTestCase, Dashboard, ProblemImportOrExport } from './views'
+  Problem, ProblemList, User, PruneTestCase, Dashboard, ProblemImportOrExport ,
+  ExamList,Exam,ExamResultList,ExamStudentList,ExamCreate,ExamDetailList,ExamDetail,
+  StudentList,StudentCreate,ExamDetailCreate
+} from './views'
 Vue.use(VueRouter)
 
 export default new VueRouter({
@@ -48,6 +51,47 @@ export default new VueRouter({
           path: '/prune-test-case',
           name: 'prune-test-case',
           component: PruneTestCase
+        },
+        {
+          path:"/exam/get_list",
+          name:'exam-list',
+          component:ExamList
+        },
+        {
+          path:"/exam/create",
+          name:'exam-create',
+          component:ExamCreate
+        },
+        {
+          path:"/exam/detail/create",
+          name:'exam-detail-create',
+          component:ExamDetailCreate
+        },
+        {
+          path:"/exam/exam_detail_list",
+          name:'exam_detail_list',
+          component:ExamDetailList
+        },
+        {
+          path:"/exam/exam_detail_edit/:exam_detail_id",
+          name:'exam-detail-edit',
+          component:ExamDetail
+
+        },
+        {
+          path:"/exam/result/get_list",
+          name:'exam-result-list',
+          component:ExamResultList
+        },
+        {
+          path:"/student/get_list",
+          name:'student-list',
+          component:StudentList
+        },
+        {
+          path:"/student/create",
+          name:'student-create',
+          component:StudentCreate
         },
         {
           path: '/problems',

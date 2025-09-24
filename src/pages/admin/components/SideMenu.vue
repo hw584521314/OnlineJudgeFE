@@ -13,12 +13,20 @@
       <el-menu-item index="/judge-server">{{$t('m.Judge_Server')}}</el-menu-item>
       <el-menu-item index="/prune-test-case">{{$t('m.Prune_Test_Case')}}</el-menu-item>
     </el-submenu>
+    
     <el-submenu index="problem" v-if="hasProblemPermission">
       <template slot="title"><i class="el-icon-fa-bars"></i>{{$t('m.Problem')}}</template>
       <el-menu-item index="/problems">{{$t('m.Problem_List')}}</el-menu-item>
       <el-menu-item index="/problem/create">{{$t('m.Create_Problem')}}</el-menu-item>
       <el-menu-item index="/problem/batch_ops">{{$t('m.Export_Import_Problem')}}</el-menu-item>
 
+    </el-submenu>
+    <el-submenu index="exam">
+      <template slot="title"><i class="el-icon-fa-bars"></i>{{$t('m.Exam')}}</template>
+      <el-menu-item index="/exam/exam_detail_list">{{$t('m.Exam_Detail_List')}}</el-menu-item>
+      <el-menu-item index="/exam/get_list">{{$t('m.Exam_List')}}</el-menu-item>
+      <!-- <el-menu-item index="/create">{{$t('m.Create_Exam')}}</el-menu-item> -->
+      <el-menu-item index="/student/get_list">学生列表</el-menu-item>
     </el-submenu>
     <el-submenu index="contest">
       <template slot="title"><i class="el-icon-fa-trophy"></i>{{$t('m.Contest')}}</template>

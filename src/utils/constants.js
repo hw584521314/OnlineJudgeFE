@@ -69,6 +69,11 @@ export const JUDGE_STATUS = {
     type: 'warning'
   }
 }
+export const EXAM_STATUS={
+  'NOT_START': '0',
+  'UNDERWAY': '1',
+  'ENDED': '2'
+}
 
 export const CONTEST_STATUS = {
   'NOT_START': '1',

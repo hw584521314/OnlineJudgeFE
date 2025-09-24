@@ -115,12 +115,22 @@
                   on: {
                     click: () => {
                       if (this.contestID) {
+                        
                         this.$router.push(
                           {
                             name: 'contest-problem-details',
                             params: {problemID: params.row.problem, contestID: this.contestID}
                           })
-                      } else {
+                      }
+                      else if(this.examID)
+                      {
+                        this.$router.push(
+                          {
+                            name: 'exam-problem-details',
+                            params: {problemID: params.row.problem_id, examID: this.examID}
+                          })
+                      } 
+                      else {
                         this.$router.push({name: 'problem-details', params: {problemID: params.row.problem}})
                       }
                     }
@@ -134,6 +144,13 @@
             align: 'center',
             render: (h, params) => {
               return h('span', utils.submissionTimeFormat(params.row.statistic_info.time_cost))
+            }
+          },
+          {
+            title: "分值",
+            align: 'center',
+            render: (h, params) => {
+              return h('span', params.row.statistic_info.score)
             }
           },
           {
@@ -176,6 +193,7 @@
         limit: 12,
         page: 1,
         contestID: '',
+        examID: '',
         problemID: '',
         routeName: '',
         JUDGE_STATUS: '',
@@ -192,6 +210,7 @@
     methods: {
       init () {
         this.contestID = this.$route.params.contestID
+        this.examID=this.$route.params.examID
         let query = this.$route.query
         this.problemID = query.problemID
         this.formFilter.myself = query.myself === '1'
@@ -215,9 +234,21 @@
       getSubmissions () {
         let params = this.buildQuery()
         params.contest_id = this.contestID
+        params.exam_id = this.examID
         params.problem_id = this.problemID
         let offset = (this.page - 1) * this.limit
-        let func = this.contestID ? 'getContestSubmissionList' : 'getSubmissionList'
+        let func='getSubmissionList'
+        if(this.contestID)
+        {
+            func='getContestSubmissionList'
+        }
+        else if(this.examID)
+        {
+            func='getExamSubmissionList'
+        }
+        
+          
+        
         this.loadingTable = true
         api[func](offset, this.limit, params).then(res => {
           let data = res.data.data
@@ -236,8 +267,17 @@
       changeRoute () {
         let query = utils.filterEmptyValue(this.buildQuery())
         query.contestID = this.contestID
+        query.examID=this.examID
         query.problemID = this.problemID
-        let routeName = query.contestID ? 'contest-submission-list' : 'submission-list'
+        let routeName = 'submission-list'
+        if(query.contestID)
+        {
+          routeName='contest-submission-list'
+        }
+        else if(query.examID )
+        {
+          routeName='exam-submission-list'
+        }
         this.$router.push({
           name: routeName,
           query: utils.filterEmptyValue(query)

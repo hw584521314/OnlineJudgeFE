@@ -14,11 +14,13 @@ import {
   ResetPassword,
   SubmissionDetails,
   SubmissionList,
-  UserHome
+  UserHome,
+  ExamHome,ExamDetail,ExamProblemList,ExamProblem,ExamResult,ExamUser
 } from '../views'
 
 import * as Contest from '@oj/views/contest'
 import * as Setting from '@oj/views/setting'
+
 
 export default [
   {
@@ -68,6 +70,37 @@ export default [
     path: '/status/:id/',
     meta: {title: 'Submission Details'},
     component: SubmissionDetails
+  },
+  {name:'exam-home',
+    path:'/exam/',
+    component:ExamHome
+  },
+  {name:'exam-detail',
+    path:'/exam/:examID',
+    component:ExamDetail,
+    children: [
+      {
+        name: 'exam-submission-list',
+        path: 'submissions',
+        component: SubmissionList
+      },
+      {
+        name: 'exam-problem-list',
+        path: 'problems',
+        component: ExamProblemList
+      },
+      {
+        name: 'exam-problem-details',
+        path: 'problem/:problemID/',
+        component: ExamProblem
+      },
+      
+      {
+        name: 'exam-result',
+        path: 'result',
+        component: ExamResult
+      },
+    ]
   },
   {
     name: 'contest-list',
@@ -130,6 +163,12 @@ export default [
     path: '/user-home',
     component: UserHome,
     meta: {requiresAuth: true, title: 'User Home'}
+  },
+  {
+    name: 'user-exam',
+    path: '/user-exam',
+    component: ExamUser,
+    meta: {requiresAuth: true, title: 'User Exam'}
   },
   {
     path: '/setting',

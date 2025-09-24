@@ -2,6 +2,7 @@
   <div class="page">
     <Page :total="total"
           :page-size="pageSize"
+          show-total
           @on-change="onChange"
           @on-page-size-change="onPageSizeChange"
           :show-sizer="showSizer"
