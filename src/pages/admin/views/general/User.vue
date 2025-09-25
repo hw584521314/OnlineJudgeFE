@@ -313,7 +313,10 @@
         this.showUserDialog = true
         api.getUser(id).then(res => {
           this.user = res.data.data
-          this.user.password = ''
+          // 正确方式：使用 Vue.set 添加响应式属性,vue2会丢失深层响应
+          //症状就是绑定的组件无法输入值。
+          this.$set(this.user, 'password', '')
+          //this.user.password = ''
           this.user.real_tfa = this.user.two_factor_auth
         })
       },
