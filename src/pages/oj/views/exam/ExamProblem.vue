@@ -48,6 +48,14 @@
 
         </div>
       </Panel>
+      <!-- <button @click="testAnanimation" >testAnanimation</button> -->
+      <transition name="zoom">
+    <div v-if="showACAnimation" class="ac-modal-overlay" >
+      <div class="ac-modal-content" >
+        <img src="../../../../assets/ac-girl.png" class="ac-image" alt="Congratulations">
+      </div>
+    </div>
+  </transition>
       <!--problem main end-->
       <Card :padding="20" id="submit-code" dis-hover>
         <CodeMirror :value.sync="code"
@@ -182,8 +190,10 @@
   import {FormMixin} from '@oj/components/mixins'
   import {JUDGE_STATUS, EXAM_STATUS, buildProblemCodeKey} from '@/utils/constants'
   import api from '@oj/api'
+  
 import user from '../../../../store/modules/user'
 import exam from '../../../../store/modules/exam'
+import { duration } from 'moment'
 
 
   // 只显示这些状态的图形占用
@@ -197,6 +207,7 @@ import exam from '../../../../store/modules/exam'
     mixins: [FormMixin],
     data () {
       return {
+        showACAnimation: false,
         statusVisible: false,
         captchaRequired: false,
         graphVisible: false,
@@ -310,6 +321,14 @@ import exam from '../../../../store/modules/exam'
           }
         })
       },
+      testAnanimation()
+      {
+              this.showACAnimation = true
+                  setTimeout(() => {
+                    this.showACAnimation = false;
+                    
+                  }, 2000)
+      },
       checkSubmissionStatus () {
         // 使用setTimeout避免一些问题
         if (this.refreshStatus) {
@@ -328,7 +347,21 @@ import exam from '../../../../store/modules/exam'
               this.submitted = false
               clearTimeout(this.refreshStatus)
               this.init()
-              this.handleRoute(this.submissionRoute);
+              //检查结果，如果结果是通过，显示通过的过场动画
+              if(this.result.result==0)
+              {
+                 this.showACAnimation = true
+                  setTimeout(() => {
+                    this.showACAnimation = false;
+                    
+                  }, 2000)
+
+              }
+              else
+              {//跳转到提交结果页
+                  this.handleRoute(this.submissionRoute);
+              }
+              
             } else {
               this.refreshStatus = setTimeout(checkStatus, 2000)
             }
@@ -561,5 +594,64 @@ import exam from '../../../../store/modules/exam'
     width: 500px;
     height: 480px;
   }
+
+
+  .ac-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.ac-modal-content {
+  background: transparent;
+  //border-radius: 8px;
+  padding: 20px;
+  //box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.ac-image {
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+.zoom-enter-active {
+  animation: zoomIn 0.5s ease-out forwards;
+}
+
+.zoom-leave-active {
+  animation: zoomOut 0.3s ease-in forwards;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
 </style>
 

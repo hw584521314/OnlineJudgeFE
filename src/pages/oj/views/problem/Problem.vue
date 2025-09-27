@@ -132,7 +132,13 @@
           </VerticalMenu-item>
         </template>
       </VerticalMenu>
-
+<transition name="zoom">
+    <div v-if="showACAnimation" class="ac-modal-overlay" >
+      <div class="ac-modal-content" >
+        <img src="../../../../assets/ac-girl.png" class="ac-image" alt="Congratulations">
+      </div>
+    </div>
+  </transition>
       <Card id="info">
         <div slot="title" class="header">
           <Icon type="information-circled"></Icon>
@@ -220,6 +226,7 @@
     mixins: [FormMixin],
     data () {
       return {
+        showACAnimation: false,
         statusVisible: false,
         captchaRequired: false,
         graphVisible: false,
@@ -387,6 +394,16 @@
               this.submitted = false
               clearTimeout(this.refreshStatus)
               this.init()
+              //检查结果，如果结果是通过，显示通过的过场动画
+              if(this.result.result==0)
+              {
+                 this.showACAnimation = true
+                  setTimeout(() => {
+                    this.showACAnimation = false;
+                    
+                  }, 2000)
+
+              }
             } else {
               this.refreshStatus = setTimeout(checkStatus, 2000)
             }
@@ -623,5 +640,65 @@
     width: 500px;
     height: 480px;
   }
+
+
+  
+  .ac-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.ac-modal-content {
+  background: transparent;
+  //border-radius: 8px;
+  padding: 20px;
+  //box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.ac-image {
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+.zoom-enter-active {
+  animation: zoomIn 0.5s ease-out forwards;
+}
+
+.zoom-leave-active {
+  animation: zoomOut 0.3s ease-in forwards;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
 </style>
 
