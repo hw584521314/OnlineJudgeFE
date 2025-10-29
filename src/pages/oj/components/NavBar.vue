@@ -22,6 +22,11 @@
         <Icon type="ios-pulse-strong"></Icon>
         {{$t('m.NavStatus')}}
       </Menu-item> 
+      <Menu-item name="/typing">
+          <Icon type="trophy"></Icon>
+           打字 
+        </Menu-item>
+        
       <Submenu name="rank" v-if="running_mode!='exam'">
         <template slot="title">
           <Icon type="podium"></Icon>
@@ -34,6 +39,9 @@
           {{$t('m.OI_Rank')}}
         </Menu-item>
       </Submenu>
+       
+        
+       
        <Submenu name="about">
         <template slot="title">
           <Icon type="information-circled"></Icon>

@@ -215,6 +215,21 @@ export default {
       params
     })
   },
+  getTypingInfo()
+  {
+    return ajax('typing', 'get')
+  },
+  getTypingHistory()
+  {
+    return ajax('typing_history', 'get')
+  },
+  submitTypingResult(data)
+  {
+    return ajax('typing', 'post', {
+      data
+    }
+    )
+  },
   getSubmissionList (offset, limit, params) {
     params.limit = limit
     params.offset = offset

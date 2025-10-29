@@ -23,6 +23,10 @@
             <p>{{$t('m.UserHomeserSubmissions')}}</p>
             <p class="emphasis">{{profile.submission_number}}</p>
           </div>
+          <div class="middle">
+            <p>打字能力</p>
+            <p class="emphasis">准确率：{{typingInfo.accuracy}}|TPM：{{typingInfo.tpm}}</p>
+          </div>
           <div class="right">
             <p>{{$t('m.UserHomeScore')}}</p>
             <p class="emphasis">{{profile.total_score}}</p>
@@ -45,17 +49,11 @@
             </div>
           </div>
         </div>
-        <div id="icons">
-          <a :href="profile.github">
-            <Icon type="social-github-outline" size="30"></Icon>
-          </a>
-          <a :href="'mailto:'+ profile.user.email">
-            <Icon class="icon" type="ios-email-outline" size="30"></Icon>
-          </a>
-          <a :href="profile.blog">
-            <Icon class="icon" type="ios-world-outline" size="30"></Icon>
-          </a>
-        </div>
+        
+          <div class="echarts">
+            <ECharts :options="options" ref="chart" auto-resize></ECharts>
+          </div>
+        
       </div>
     </Card>
   </div>
@@ -64,13 +62,16 @@
   import { mapActions } from 'vuex'
   import time from '@/utils/time'
   import api from '@oj/api'
+  import utils from '@/utils/utils'
 
   export default {
     data () {
       return {
         username: '',
         profile: {},
-        problems: []
+        problems: [],
+        typingInfo: {},
+        options:{}
       }
     },
     mounted () {
@@ -86,7 +87,85 @@
           this.getSolvedProblems()
           let registerTime = time.utcToLocal(this.profile.user.create_time, 'YYYY-MM-D')
           console.log('The guy registered at ' + registerTime + '.')
-        })
+        });
+        api.getTypingInfo().then(res => {
+          this.typingInfo = res.data.data;
+                })
+
+
+
+        api.getTypingHistory().then(res => { 
+          let data=res.data.data;
+          //从data中取得日期和准确率
+          let dates=[];
+          let accuracies=[];
+          data.forEach(item=>{
+            dates.push(time.utcToLocal(item.date,'YYYY-MM-DD HH:mm'));
+            accuracies.push(item.accuracy);
+          });
+
+          this.options={
+          tooltip: {
+            trigger: 'axis'
+          },
+          legend: {
+            data: ["准确率"]
+          },
+          grid: {
+            x: '3%',
+            x2: '3%'
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              dataView: {show: true, readOnly: true},
+              magicType: {show: true, type: ['line', 'bar']},
+              saveAsImage: {show: true}
+            },
+            right: '10%'
+          },
+          calculable: true,
+          xAxis: [
+            {
+              type: 'category',
+              data: dates,
+              boundaryGap: true,
+              axisLabel: {
+                //顺时针旋转45度
+                rotate: -45,
+                interval: 0,
+                showMinLabel: true,
+                showMaxLabel: true,
+                align: 'center',
+                formatter: (value, index) => {
+                  return utils.breakLongWords(value, 11)
+                }
+              },
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value'
+            }
+          ],
+          series: [
+            {
+              name: "准确率",
+              type: 'line',
+              data: accuracies,
+              barMaxWidth: '80',
+              markPoint: {
+                data: [
+                  {type: 'max', name: 'max'}
+                ]
+              }
+            }
+          ]
+        }      
+        });
       },
       getSolvedProblems () {
         let ACMProblems = this.profile.acm_problems_status.problems || {}
@@ -198,5 +277,10 @@
         padding-left: 20px;
       }
     }
+    .echarts {
+    margin: 0 auto;
+    width: 95%;
+    height: 400px;
+  }
   }
 </style>

@@ -15,7 +15,8 @@ import {
   SubmissionDetails,
   SubmissionList,
   UserHome,
-  ExamHome,ExamDetail,ExamProblemList,ExamProblem,ExamResult,ExamUser
+  ExamHome,ExamDetail,ExamProblemList,ExamProblem,ExamResult,ExamUser,
+  Typing
 } from '../views'
 
 import * as Contest from '@oj/views/contest'
@@ -157,6 +158,12 @@ export default [
     path: '/oi-rank',
     meta: {title: 'OI Rankings'},
     component: OIRank
+  },
+  {
+    name: 'typing',
+    path: '/typing',
+    meta: {title: 'Typing'},
+    component: Typing
   },
   {
     name: 'user-home',

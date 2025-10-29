@@ -12,6 +12,7 @@ import ExamProblemList from './exam/ExamProblemList.vue'
 import ExamProblem from './exam/ExamProblem.vue'
 import ExamResult from './exam/ExamResult.vue'
 import ExamUser from './exam/ExamUser.vue'
+import Typing from './typing/Typing.vue'
 // Grouping Components in the Same Chunk
 const SubmissionList = () => import(/* webpackChunkName: "submission" */ '@oj/views/submission/SubmissionList.vue')
 const SubmissionDetails = () => import(/* webpackChunkName: "submission" */ '@oj/views/submission/SubmissionDetails.vue')
@@ -31,7 +32,8 @@ export {
   ACMRank, OIRank,
   SubmissionList, SubmissionDetails,
   ApplyResetPassword, ResetPassword,
-  ExamHome,ExamDetail,ExamProblemList,ExamProblem,ExamResult,ExamUser
+  ExamHome,ExamDetail,ExamProblemList,ExamProblem,ExamResult,ExamUser,
+  Typing
 }
 /* 组件导出分为两类, 一类常用的直接导出，另一类诸如Login, Logout等用懒加载,懒加载不在此处导出
  *   在对应的route内加载
