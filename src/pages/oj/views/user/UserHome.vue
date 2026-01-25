@@ -88,19 +88,19 @@
           let registerTime = time.utcToLocal(this.profile.user.create_time, 'YYYY-MM-D')
           console.log('The guy registered at ' + registerTime + '.')
         });
-        api.getTypingInfo().then(res => {
+        api.getTypingInfo(this.username).then(res => {
           this.typingInfo = res.data.data;
                 })
 
 
 
-        api.getTypingHistory().then(res => { 
+        api.getTypingHistory(this.username).then(res => { 
           let data=res.data.data;
           //从data中取得日期和准确率
           let dates=[];
           let accuracies=[];
           data.forEach(item=>{
-            dates.push(time.utcToLocal(item.date,'YYYY-MM-DD HH:mm'));
+            dates.push(time.utcToLocal(item.create_time,'YYYY-MM-DD HH:mm'));
             accuracies.push(item.accuracy);
           });
 
@@ -132,7 +132,7 @@
               boundaryGap: true,
               axisLabel: {
                 //顺时针旋转45度
-                rotate: -45,
+                //rotate: -45,
                 interval: 0,
                 showMinLabel: true,
                 showMaxLabel: true,
@@ -175,7 +175,9 @@
         for (let problems of [ACMProblems, OIProblems]) {
           Object.keys(problems).forEach(problemID => {
             if (problems[problemID]['status'] === 0) {
-              ACProblems.push(problems[problemID]['_id'])
+              //检查是否已经有该题目，避免重复
+              if (!ACProblems.includes(problems[problemID]['_id'])) 
+                    ACProblems.push(problems[problemID]['_id'])
             }
           })
         }

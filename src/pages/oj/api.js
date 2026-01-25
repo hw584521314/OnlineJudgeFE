@@ -215,13 +215,20 @@ export default {
       params
     })
   },
-  getTypingInfo()
+  getTypingInfo(username = undefined)
   {
-    return ajax('typing', 'get')
+    //params = utils.filterEmptyValue(params)
+    let params={  username }
+    return ajax('typing', 'get',{params
+      
+    })
   },
-  getTypingHistory()
+  getTypingHistory(username = undefined)
   {
-    return ajax('typing_history', 'get')
+    //params = utils.filterEmptyValue(params)
+    let params={  username }
+    return ajax('typing_history', 'get',{params
+    })
   },
   submitTypingResult(data)
   {
